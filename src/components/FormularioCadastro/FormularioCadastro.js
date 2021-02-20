@@ -2,7 +2,7 @@ import React, {useState} from "react";
 import { TextField, Button, Switch, FormControlLabel } from "@material-ui/core";
 
 
-const  FormularioCadastro = ({onSubmit}) => {
+const  FormularioCadastro = ({onSubmit,validaCPF}) => {
     const [nome,setNome] = useState('');
     const [sobrenome,setSobrenome] = useState('')
     const [cpf,setCpf] = useState('')
@@ -10,9 +10,6 @@ const  FormularioCadastro = ({onSubmit}) => {
     const [promocoes,setPromocoes] = useState(false)
     const [erros,setErros] = useState({cpf:{valido:true,texto:""}})
 
-    const validaCPF = ()=>{
-      
-    }
   return (
     <form onSubmit={(e) =>{
       e.preventDefault()
@@ -49,7 +46,8 @@ const  FormularioCadastro = ({onSubmit}) => {
               setCpf(e.target.value)
             }}
         onBlur={(e) =>{
-          setErros({cpf:{valido:false,texto:"CPF inválido,ele deve ter 11 dígitos"}})
+          const valido = validaCPF(e.target.value);
+          setErros({cpf:valido})
         }}    
         error={!erros.cpf.valido}
         helperText={erros.cpf.texto}
