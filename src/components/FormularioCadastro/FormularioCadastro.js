@@ -6,8 +6,13 @@ const  FormularioCadastro = ({onSubmit}) => {
     const [nome,setNome] = useState('');
     const [sobrenome,setSobrenome] = useState('')
     const [cpf,setCpf] = useState('')
-    const [novidades,setNovidades] = useState(false)
+    const [novidades,setNovidades] = useState(true)
     const [promocoes,setPromocoes] = useState(false)
+    const [erros,setErros] = useState({cpf:{valido:true,texto:""}})
+
+    const validaCPF = ()=>{
+      
+    }
   return (
     <form onSubmit={(e) =>{
       e.preventDefault()
@@ -17,12 +22,9 @@ const  FormularioCadastro = ({onSubmit}) => {
       <TextField
         value={nome}
         onChange={(e) =>{
-          let tempNome = e.target.value;
-          if(tempNome.length >1){
-            tempNome.substr(0,3)
-          }
-          setNome(tempNome);
+          setNome(e.target.value);
         }}
+        
         id="nome"
         label="Nome"
         variant="outlined"
@@ -33,11 +35,7 @@ const  FormularioCadastro = ({onSubmit}) => {
       
       value={sobrenome}
       onChange={(e) =>{
-        let tempSobrenome = e.target.value;
-        if(tempSobrenome.length >1){
-          tempSobrenome.substr(0,3)
-        }
-        setSobrenome(tempSobrenome);
+        setSobrenome(e.target.value);
       }}
         id="sobrenome"
         label="Sobrenome"
@@ -48,12 +46,13 @@ const  FormularioCadastro = ({onSubmit}) => {
       <TextField
             value={cpf}
             onChange={(e) =>{
-              let tempCpf = e.target.value;
-              if(tempCpf.length <= 10){
-                tempCpf.substr(0,11)
-              }
-              setCpf(tempCpf);
+              setCpf(e.target.value)
             }}
+        onBlur={(e) =>{
+          setErros({cpf:{valido:false,texto:"CPF inválido,ele deve ter 11 dígitos"}})
+        }}    
+        error={!erros.cpf.valido}
+        helperText={erros.cpf.texto}
         id="CPF"
         label="CPF"
         variant="outlined"
