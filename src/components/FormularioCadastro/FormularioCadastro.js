@@ -2,17 +2,17 @@ import React, {useState} from "react";
 import { TextField, Button, Switch, FormControlLabel } from "@material-ui/core";
 
 
-const  FormularioCadastro = () => {
+const  FormularioCadastro = ({onSubmit}) => {
     const [nome,setNome] = useState('');
     const [sobrenome,setSobrenome] = useState('')
     const [cpf,setCpf] = useState('')
     const [novidades,setNovidades] = useState(false)
     const [promocoes,setPromocoes] = useState(false)
-    console.log(nome,sobrenome,cpf,novidades,promocoes)
   return (
     <form onSubmit={(e) =>{
       e.preventDefault()
-      console.log(e.target.value)
+      onSubmit({nome,sobrenome,cpf,novidades,promocoes})
+      
     }}>
       <TextField
         value={nome}
