@@ -1,9 +1,12 @@
 import { Button, TextField } from "@material-ui/core";
 import React from "react";
 
-const DadosUsuario = () => {
+const DadosUsuario = ({onSubmit}) => {
   return (
-    <form>
+    <form onSubmit ={(e)=>{
+        e.preventDefault()
+        onSubmit();
+    }}>
       <TextField
         id="email"
         label="email"
