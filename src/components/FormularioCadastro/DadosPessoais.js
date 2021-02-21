@@ -1,20 +1,39 @@
-import React, { useState } from "react";
-
+import React, { useState,useContext } from "react";
+import ValidacoesCadastro from '../../contexts/ValidacoesCadastro'
 import { TextField, Button, Switch, FormControlLabel } from "@material-ui/core";
 
-const DadosPessoais = ({ onSubmit, validaCPF }) => {
+const DadosPessoais = ({ onSubmit }) => {
   const [nome, setNome] = useState("");
   const [sobrenome, setSobrenome] = useState("");
   const [cpf, setCpf] = useState("");
   const [novidades, setNovidades] = useState(true);
   const [promocoes, setPromocoes] = useState(false);
   const [erros, setErros] = useState({ cpf: { valido: true, texto: "" } });
+  
+  
+  const validacoes = useContext(ValidacoesCadastro)
+  const validarCampos = (e) =>{
+    const {name,value} = e.target
+    const novoEstado ={...erros}
+    novoEstado[name] = validacoes[name](value)
+    setErros(novoEstado)
+  }
 
+  const possoEnviar = (e) =>{
+    for(let campo in erros){
+      if(!erros[campo].valido){
+        return false
+      }
+    }
+    return true;
+  }
   return (
     <form
       onSubmit={(e) => {
         e.preventDefault();
-        onSubmit({ nome, sobrenome, cpf, novidades, promocoes });
+        if(possoEnviar()){
+          onSubmit({ nome, sobrenome, cpf, novidades, promocoes });
+        }
       }}
     >
       <TextField
@@ -46,14 +65,12 @@ const DadosPessoais = ({ onSubmit, validaCPF }) => {
         onChange={(e) => {
           setCpf(e.target.value);
         }}
-        onBlur={(e) => {
-          const valido = validaCPF(e.target.value);
-          setErros({ cpf: valido });
-        }}
+        onBlur={validarCampos}
         error={!erros.cpf.valido}
         helperText={erros.cpf.texto}
-        id="CPF"
+        id="cpf"
         label="CPF"
+        name="cpf"
         variant="outlined"
         margin="normal"
         fullWidth
@@ -91,7 +108,7 @@ const DadosPessoais = ({ onSubmit, validaCPF }) => {
       />
 
       <Button type="submit" variant="contained" color="primary">
-        Cadastrar
+        Próximo
       </Button>
     </form>
   );
